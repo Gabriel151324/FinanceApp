@@ -1,0 +1,262 @@
+:root {
+  --bg: #0f172a;
+  --card: #111827;
+  --text: #e5e7eb;
+  --green: #22c55e;
+  --red: #ef4444;
+  --blue: #38bdf8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+header {
+  padding: 20px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 1.8rem;
+}
+
+header span {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.dashboard {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* CARDS */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.3);
+}
+
+.card h3 {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.card p {
+  font-size: 1.8rem;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.green { border-left: 6px solid var(--green); }
+.red { border-left: 6px solid var(--red); }
+.blue { border-left: 6px solid var(--blue); }
+
+/* AÇÕES */
+.actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.box {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.box h2 {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  margin-bottom: 10px;
+  background: #020617;
+  color: var(--text);
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: var(--green);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button.danger {
+  background: var(--red);
+  color: #fff;
+}
+
+/* mantém tudo que você já tem */
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* BOTTOM BAR */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #020617;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1px solid #1e293b;
+}
+
+.bottom-bar button {
+  background: none;
+  border: none;
+  color: #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.bottom-bar span {
+  font-size: 0.7rem;
+  margin-top: 4px;
+  opacity: 0.8;
+}
+
+.bottom-bar button:hover {
+  color: #22c55e;
+}
+
+/* espaço pra não ficar atrás da barra */
+.dashboard {
+  padding-bottom: 90px;
+}
+
+ul {
+  list-style: none;
+  margin-top: 10px;
+}
+
+li {
+  background: #020617;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.actions button {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+
+.edit {
+  background: #38bdf8;
+}
+
+.delete {
+  background: #ef4444;
+  color: #fff;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background: #020617;
+  color: #e5e7eb;
+  border: none;
+}
+
+/* GRID ORGANIZADO */
+.grid-two {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* BOXES MAIS CONTROLADAS */
+.box {
+  background: var(--card);
+  padding: 18px;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.25);
+}
+
+.box.small {
+  max-height: fit-content;
+}
+
+/* HISTÓRICO */
+ul {
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+li {
+  background: #020617;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* AÇÕES */
+.actions button {
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .grid-two {
+    grid-template-columns: 1fr;
+  }
+}
