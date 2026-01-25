@@ -1,94 +1,150 @@
-let vendas = JSON.parse(localStorage.getItem("vendas")) || [];
+/* ======================
+   ESTADO GLOBAL
+====================== */
+let ganhos = JSON.parse(localStorage.getItem("ganhos")) || [];
 let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
 
-function hoje() {
-  return new Date().toLocaleDateString();
-}
+/* ======================
+   ELEMENTOS DASHBOARD
+====================== */
+const totalGanhos = document.getElementById("totalGanhos");
+const totalGastos = document.getElementById("totalGastos");
+const lucro = document.getElementById("lucro");
 
+/* ======================
+   NAVEGAÇÃO
+====================== */
 function showPage(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.remove("active")
+  );
   document.getElementById(id).classList.add("active");
-  render();
 }
 
-function addVenda() {
-  vendas.push({
+/* ======================
+   SALVAR
+====================== */
+function salvar() {
+  localStorage.setItem("ganhos", JSON.stringify(ganhos));
+  localStorage.setItem("gastos", JSON.stringify(gastos));
+  atualizar();
+}
+
+/* ======================
+   ADICIONAR GANHO
+====================== */
+function addGanho() {
+  const input = document.getElementById("ganhoValor");
+  const valor = Number(input.value);
+
+  if (!valor || valor <= 0) {
+    alert("Informe um valor válido");
+    return;
+  }
+
+  ganhos.push({
     id: Date.now(),
-    data: hoje(),
-    valor: Number(vendaValor.value),
-    pagamento: vendaPagamento.value,
-    obs: vendaObs.value
+    valor
   });
+
+  input.value = "";
   salvar();
 }
 
+/* ======================
+   ADICIONAR GASTO
+====================== */
 function addGasto() {
+  const input = document.getElementById("gastoValor");
+  const valor = Number(input.value);
+
+  if (!valor || valor <= 0) {
+    alert("Informe um valor válido");
+    return;
+  }
+
   gastos.push({
     id: Date.now(),
-    data: hoje(),
-    valor: Number(gastoValor.value),
-    categoria: gastoCategoria.value,
-    obs: gastoObs.value
+    valor
   });
+
+  input.value = "";
   salvar();
 }
 
-function salvar() {
-  localStorage.setItem("vendas", JSON.stringify(vendas));
-  localStorage.setItem("gastos", JSON.stringify(gastos));
-  vendaValor.value = gastoValor.value = "";
-  vendaObs.value = gastoObs.value = "";
-  atualizar();
-  render();
-}
-
-function excluir(tipo, id) {
-  if (tipo === "venda") vendas = vendas.filter(v => v.id !== id);
-  else gastos = gastos.filter(g => g.id !== id);
-  salvar();
-}
-
-function editar(tipo, id) {
-  const lista = tipo === "venda" ? vendas : gastos;
-  const item = lista.find(i => i.id === id);
-  const novoValor = prompt("Novo valor:", item.valor);
-  if (novoValor) item.valor = Number(novoValor);
-  salvar();
-}
-
-function render() {
-  listaVendas.innerHTML = "";
-  vendas.filter(v => v.data === hoje()).forEach(v => {
-    listaVendas.innerHTML += `
-      <li>
-        R$ ${v.valor} - ${v.pagamento}
-        <div class="actions">
-          <button class="edit" onclick="editar('venda', ${v.id})">✏️</button>
-          <button class="delete" onclick="excluir('venda', ${v.id})">🗑</button>
-        </div>
-      </li>`;
-  });
-
-  listaGastos.innerHTML = "";
-  gastos.filter(g => g.data === hoje()).forEach(g => {
-    listaGastos.innerHTML += `
-      <li>
-        R$ ${g.valor} - ${g.categoria}
-        <div class="actions">
-          <button class="edit" onclick="editar('gasto', ${g.id})">✏️</button>
-          <button class="delete" onclick="excluir('gasto', ${g.id})">🗑</button>
-        </div>
-      </li>`;
-  });
-}
-
+/* ======================
+   ATUALIZAR DASHBOARD
+====================== */
 function atualizar() {
-  const totalV = vendas.reduce((a,b)=>a+b.valor,0);
-  const totalG = gastos.reduce((a,b)=>a+b.valor,0);
-  totalVendas.innerText = totalV.toFixed(2);
-  totalGastos.innerText = totalG.toFixed(2);
-  lucro.innerText = (totalV - totalG).toFixed(2);
+  const totalG = ganhos.reduce((s, g) => s + Number(g.valor), 0);
+  const totalGa = gastos.reduce((s, g) => s + Number(g.valor), 0);
+
+  totalGanhos.innerText = totalG.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+
+  totalGastos.innerText = totalGa.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+
+  lucro.innerText = (totalG - totalGa).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
+
+  renderListas();
 }
 
-atualizar();
-render();
+/* ======================
+   LISTAS
+====================== */
+function renderListas() {
+  const listaGanhos = document.getElementById("listaGanhos");
+  const listaGastos = document.getElementById("listaGastos");
+
+  if (listaGanhos) {
+    listaGanhos.innerHTML = "";
+    ganhos.forEach(g => {
+      listaGanhos.innerHTML += `
+        <li>
+          R$ ${Number(g.valor).toFixed(2)}
+          <button onclick="excluir('ganho', ${g.id})">🗑</button>
+        </li>
+      `;
+    });
+  }
+
+  if (listaGastos) {
+    listaGastos.innerHTML = "";
+    gastos.forEach(g => {
+      listaGastos.innerHTML += `
+        <li>
+          R$ ${Number(g.valor).toFixed(2)}
+          <button onclick="excluir('gasto', ${g.id})">🗑</button>
+        </li>
+      `;
+    });
+  }
+}
+
+/* ======================
+   EXCLUIR
+====================== */
+function excluir(tipo, id) {
+  if (tipo === "ganho") {
+    ganhos = ganhos.filter(g => g.id !== id);
+  } else {
+    gastos = gastos.filter(g => g.id !== id);
+  }
+  salvar();
+}
+
+/* ======================
+   INIT
+====================== */
+document.addEventListener("DOMContentLoaded", () => {
+  atualizar();
+  showPage("dashboard");
+});

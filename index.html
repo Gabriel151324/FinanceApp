@@ -1,97 +1,87 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Financeiro | Lanchonete</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💸 Finanças</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-<header>
-  <h1>📊 Financeiro</h1>
-</header>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2>💸 Finanças</h2>
 
-<main class="dashboard">
+    <button onclick="showPage('dashboard')">
+      📊 Dashboard
+    </button>
 
-  <!-- DASHBOARD -->
-  <section id="dashboard" class="page active">
-    <div class="cards">
-      <div class="card green">
-        <h3>Entradas</h3>
-        <p>R$ <span id="totalVendas">0</span></p>
+    <button onclick="showPage('ganhos')">
+      ➕ Ganhos
+    </button>
+
+    <button onclick="showPage('gastos')">
+      ➖ Gastos
+    </button>
+  </aside>
+
+  <!-- CONTEÚDO -->
+  <main class="content">
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="page active">
+      <h1>Dashboard</h1>
+
+      <div class="cards">
+        <div class="card green">
+          <span>Ganhos</span>
+          <strong id="totalGanhos">R$ 0,00</strong>
+        </div>
+
+        <div class="card red">
+          <span>Gastos</span>
+          <strong id="totalGastos">R$ 0,00</strong>
+        </div>
+
+        <div class="card blue">
+          <span>Lucro</span>
+          <strong id="lucro">R$ 0,00</strong>
+        </div>
       </div>
-      <div class="card red">
-        <h3>Gastos</h3>
-        <p>R$ <span id="totalGastos">0</span></p>
+    </section>
+
+    <!-- GANHOS -->
+    <section id="ganhos" class="page">
+      <h1>Adicionar Ganho</h1>
+
+      <div class="box">
+        <input type="number" id="ganhoValor" placeholder="Valor do ganho" />
+        <button onclick="addGanho()">Salvar Ganho</button>
       </div>
-      <div class="card blue">
-        <h3>Lucro</h3>
-        <p>R$ <span id="lucro">0</span></p>
+
+      <ul id="listaGanhos"></ul>
+    </section>
+
+    <!-- GASTOS -->
+    <section id="gastos" class="page">
+      <h1>Adicionar Gasto</h1>
+
+      <div class="box">
+        <input type="number" id="gastoValor" placeholder="Valor do gasto" />
+        <button class="danger" onclick="addGasto()">
+          Salvar Gasto
+        </button>
       </div>
-    </div>
-  </section>
 
-  <!-- ENTRADAS -->
-  <section id="entradas" class="page">
-  <div class="grid-two">
-
-    <div class="box small">
-      <h2>➕ Nova Entrada</h2>
-      <input type="number" id="vendaValor" placeholder="Valor">
-      <select id="vendaPagamento">
-        <option>Dinheiro</option>
-        <option>Pix</option>
-        <option>Cartão</option>
-      </select>
-      <input type="text" id="vendaObs" placeholder="Observação">
-      <button onclick="addVenda()">Salvar</button>
-    </div>
-
-    <div class="box">
-      <h2>📅 Entradas de Hoje</h2>
-      <ul id="listaVendas"></ul>
-    </div>
-
-  </div>
-</section>
-
-
-  <!-- GASTOS -->
-  <section id="gastos" class="page">
-  <div class="grid-two">
-
-    <div class="box small">
-      <h2>➖ Novo Gasto</h2>
-      <input type="number" id="gastoValor" placeholder="Valor">
-      <select id="gastoCategoria">
-        <option>Ingredientes</option>
-        <option>Aluguel</option>
-        <option>Luz</option>
-        <option>Água</option>
-        <option>Outros</option>
-      </select>
-      <input type="text" id="gastoObs" placeholder="Observação">
-      <button class="danger" onclick="addGasto()">Salvar</button>
-    </div>
-
-    <div class="box">
-      <h2>📅 Gastos de Hoje</h2>
       <ul id="listaGastos"></ul>
-    </div>
+    </section>
 
-  </div>
-</section>
+  </main>
 
-
-</main>
-
-<nav class="bottom-bar">
-  <button onclick="showPage('dashboard')">📊<span>Resumo</span></button>
-  <button onclick="showPage('entradas')">➕<span>Entradas</span></button>
-  <button onclick="showPage('gastos')">➖<span>Gastos</span></button>
-</nav>
-
-<script src="script.js"></script>
+  <!-- SCRIPT -->
+  <script src="script.js" defer></script>
 </body>
+
 </html>
