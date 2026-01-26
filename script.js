@@ -189,7 +189,8 @@ function excluir(tipo, id) {
    UTIL
 ====================== */
 function formatarData(data) {
-  return new Date(data).toLocaleDateString("pt-BR");
+  const [ano, mes, dia] = data.split("-");
+  return `${dia}/${mes}/${ano}`;
 }
 
 /* ======================
