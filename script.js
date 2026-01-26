@@ -3,6 +3,7 @@
 ====================== */
 let ganhos = JSON.parse(localStorage.getItem("ganhos")) || [];
 let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
+let grafico = null;
 
 /* ======================
    ELEMENTOS DASHBOARD
@@ -10,6 +11,7 @@ let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
 const totalGanhos = document.getElementById("totalGanhos");
 const totalGastos = document.getElementById("totalGastos");
 const lucro = document.getElementById("lucro");
+const filtroMes = document.getElementById("filtroMes");
 
 /* ======================
    NAVEGAÇÃO
@@ -34,8 +36,13 @@ function salvar() {
    ADICIONAR GANHO
 ====================== */
 function addGanho() {
-  const input = document.getElementById("ganhoValor");
-  const valor = Number(input.value);
+  const valorInput = document.getElementById("ganhoValor");
+  const dataInput = document.getElementById("ganhoData");
+  const descInput = document.getElementById("ganhoDesc");
+
+  const valor = Number(valorInput.value);
+  const data = dataInput?.value || new Date().toISOString().split("T")[0];
+  const descricao = descInput?.value || "Ganho";
 
   if (!valor || valor <= 0) {
     alert("Informe um valor válido");
@@ -44,10 +51,13 @@ function addGanho() {
 
   ganhos.push({
     id: Date.now(),
-    valor
+    valor,
+    data,
+    descricao
   });
 
-  input.value = "";
+  valorInput.value = "";
+  if (descInput) descInput.value = "";
   salvar();
 }
 
@@ -55,8 +65,13 @@ function addGanho() {
    ADICIONAR GASTO
 ====================== */
 function addGasto() {
-  const input = document.getElementById("gastoValor");
-  const valor = Number(input.value);
+  const valorInput = document.getElementById("gastoValor");
+  const dataInput = document.getElementById("gastoData");
+  const descInput = document.getElementById("gastoDesc");
+
+  const valor = Number(valorInput.value);
+  const data = dataInput?.value || new Date().toISOString().split("T")[0];
+  const descricao = descInput?.value || "Gasto";
 
   if (!valor || valor <= 0) {
     alert("Informe um valor válido");
@@ -65,10 +80,13 @@ function addGasto() {
 
   gastos.push({
     id: Date.now(),
-    valor
+    valor,
+    data,
+    descricao
   });
 
-  input.value = "";
+  valorInput.value = "";
+  if (descInput) descInput.value = "";
   salvar();
 }
 
@@ -76,8 +94,13 @@ function addGasto() {
    ATUALIZAR DASHBOARD
 ====================== */
 function atualizar() {
-  const totalG = ganhos.reduce((s, g) => s + Number(g.valor), 0);
-  const totalGa = gastos.reduce((s, g) => s + Number(g.valor), 0);
+  const mesSelecionado = filtroMes?.value;
+
+  const ganhosFiltrados = filtrarPorMes(ganhos, mesSelecionado);
+  const gastosFiltrados = filtrarPorMes(gastos, mesSelecionado);
+
+  const totalG = ganhosFiltrados.reduce((s, g) => s + Number(g.valor), 0);
+  const totalGa = gastosFiltrados.reduce((s, g) => s + Number(g.valor), 0);
 
   totalGanhos.innerText = totalG.toLocaleString("pt-BR", {
     style: "currency",
@@ -95,38 +118,59 @@ function atualizar() {
   });
 
   renderListas();
+  atualizarGrafico(mesSelecionado);
+}
+
+
+/* ======================
+   FILTRO DE MÊS
+====================== */
+function filtrarPorMes(lista, mes) {
+  if (!mes) return lista;
+
+  return lista.filter(item => item.data.startsWith(mes));
 }
 
 /* ======================
-   LISTAS
+   LISTAS (AGRUPADAS POR DIA)
 ====================== */
 function renderListas() {
-  const listaGanhos = document.getElementById("listaGanhos");
-  const listaGastos = document.getElementById("listaGastos");
+  renderLista("listaGanhos", ganhos, "ganho");
+  renderLista("listaGastos", gastos, "gasto");
+}
 
-  if (listaGanhos) {
-    listaGanhos.innerHTML = "";
-    ganhos.forEach(g => {
-      listaGanhos.innerHTML += `
-        <li>
-          R$ ${Number(g.valor).toFixed(2)}
-          <button onclick="excluir('ganho', ${g.id})">🗑</button>
+function renderLista(idLista, dados, tipo) {
+  const lista = document.getElementById(idLista);
+  if (!lista) return;
+
+  lista.innerHTML = "";
+
+  const agrupado = dados.reduce((acc, item) => {
+    acc[item.data] = acc[item.data] || [];
+    acc[item.data].push(item);
+    return acc;
+  }, {});
+
+  Object.keys(agrupado)
+    .sort()
+    .reverse()
+    .forEach(data => {
+      lista.innerHTML += `
+        <li class="data-separador">
+          📅 ${formatarData(data)}
         </li>
       `;
-    });
-  }
 
-  if (listaGastos) {
-    listaGastos.innerHTML = "";
-    gastos.forEach(g => {
-      listaGastos.innerHTML += `
-        <li>
-          R$ ${Number(g.valor).toFixed(2)}
-          <button onclick="excluir('gasto', ${g.id})">🗑</button>
-        </li>
-      `;
+      agrupado[data].forEach(item => {
+        lista.innerHTML += `
+          <li>
+            <span>${item.descricao}</span>
+            <strong>R$ ${Number(item.valor).toFixed(2)}</strong>
+            <button onclick="excluir('${tipo}', ${item.id})">🗑</button>
+          </li>
+        `;
+      });
     });
-  }
 }
 
 /* ======================
@@ -142,9 +186,84 @@ function excluir(tipo, id) {
 }
 
 /* ======================
+   UTIL
+====================== */
+function formatarData(data) {
+  return new Date(data).toLocaleDateString("pt-BR");
+}
+
+/* ======================
+   EVENTOS
+====================== */
+if (filtroMes) {
+  filtroMes.addEventListener("change", atualizar);
+}
+
+
+/* ======================
    INIT
 ====================== */
 document.addEventListener("DOMContentLoaded", () => {
   atualizar();
   showPage("dashboard");
 });
+
+/* ======================
+   GRÁFICO MENSAL
+====================== */
+function agruparPorDia(lista, mes) {
+  const dados = {};
+
+  lista
+    .filter(item => !mes || item.data.startsWith(mes))
+    .forEach(item => {
+      const dia = item.data.split("-")[2];
+      dados[dia] = (dados[dia] || 0) + Number(item.valor);
+    });
+
+  return dados;
+}
+
+function atualizarGrafico(mesSelecionado) {
+  const ctx = document.getElementById("graficoMensal");
+  if (!ctx) return;
+
+  const ganhosDia = agruparPorDia(ganhos, mesSelecionado);
+  const gastosDia = agruparPorDia(gastos, mesSelecionado);
+
+  const dias = Array.from(
+    new Set([...Object.keys(ganhosDia), ...Object.keys(gastosDia)])
+  ).sort((a, b) => a - b);
+
+  const dadosGanhos = dias.map(d => ganhosDia[d] || 0);
+  const dadosGastos = dias.map(d => gastosDia[d] || 0);
+
+  if (grafico) grafico.destroy();
+
+  grafico = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: dias.map(d => `Dia ${d}`),
+      datasets: [
+        {
+          label: "Ganhos",
+          data: dadosGanhos,
+          backgroundColor: "#2ecc71"
+        },
+        {
+          label: "Gastos",
+          data: dadosGastos,
+          backgroundColor: "#e74c3c"
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "top"
+        }
+      }
+    }
+  });
+}

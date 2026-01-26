@@ -216,6 +216,30 @@ li button {
 }
 
 /* =========================
+   GRÁFICO
+========================= */
+.grafico-box {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 30px;
+}
+
+/* =========================
+   FILTRO MÊS
+========================= */
+.filtro-mes {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter {
+  color: var(--text);
+}
+
+/* =========================
    RESPONSIVO
 ========================= */
 @media (min-width: 768px) {
