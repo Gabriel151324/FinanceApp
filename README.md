@@ -19,21 +19,21 @@ Projeto **publicado e funcional**, com dashboard moderno e dados persistidos no 
 ### 📊 Dashboard Financeiro
 Visão geral com resumo de ganhos, gastos, saldo atual e gráfico mensal.
 
-![Dashboard Financeiro](Dashboard.png)
+![Dashboard Financeiro](/img/Dashboard.png)
 
 ---
 
 ### ➕ Cadastro de Ganhos
 Tela dedicada para adicionar entradas financeiras de forma rápida e organizada.
 
-![Cadastro de Ganhos](Ganhos.png)
+![Cadastro de Ganhos](/img/Ganhos.png)
 
 ---
 
 ### ➖ Cadastro de Gastos
 Registro de despesas com categorias, valores e datas.
 
-![Cadastro de Gastos](Gastos.png)
+![Cadastro de Gastos](/img/Gastos.png)
 
 ---
 
