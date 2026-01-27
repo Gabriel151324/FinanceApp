@@ -84,6 +84,6 @@ Tecnologia usada do jeito certo, sem exagero.
  ├── index.html
  ├── style.css
  ├── script.js
- ├── assets/
+ ├── img/
  │   └── imagens, ícones, etc
  └── README.md
