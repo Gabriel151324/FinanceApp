@@ -42,7 +42,7 @@
 
       <div class="filtro-mes">
         <label for="filtroMes">📆 Mês:</label>
-        <input type="month" id="filtroMes" class="filter"/>
+        <input type="month" id="filtroMes" class="filter" />
       </div>
 
       <div class="cards">
@@ -70,32 +70,36 @@
 
     <!-- GANHOS -->
     <section id="ganhos" class="page">
-      <h1>Adicionar Ganho</h1>
+      <div class="box-gastos">
+        <h1>Adicionar Ganho</h1>
 
-      <div class="box">
-        <input type="date" id="ganhoData" />
-        <input type="text" id="ganhoDesc" placeholder="Descrição do ganho" />
-        <input type="number" id="ganhoValor" placeholder="Valor do ganho" />
-        <button onclick="addGanho()">Salvar Ganho</button>
+        <div class="box">
+          <input type="date" id="ganhoData" />
+          <input type="text" id="ganhoDesc" placeholder="Descrição do ganho" />
+          <input type="number" id="ganhoValor" placeholder="R$ Valor do ganho" />
+          <button onclick="addGanho()">Salvar Ganho</button>
+        </div>
+
+        <ul id="listaGanhos"></ul>
       </div>
-
-      <ul id="listaGanhos"></ul>
     </section>
 
     <!-- GASTOS -->
     <section id="gastos" class="page">
-      <h1>Adicionar Gasto</h1>
+      <div class="box-gastos">
+        <h1>Adicionar Gasto</h1>
 
-      <div class="box">
-        <input type="date" id="gastoData" />
-        <input type="text" id="gastoDesc" placeholder="Descrição do gasto" />
-        <input type="number" id="gastoValor" placeholder="Valor do gasto" />
-        <button class="danger" onclick="addGasto()">
-          Salvar Gasto
-        </button>
+        <div class="box">
+          <input type="date" id="gastoData" />
+          <input type="text" id="gastoDesc" placeholder="Descrição do gasto" />
+          <input type="number" id="gastoValor" placeholder="R$ Valor do gasto" />
+          <button class="danger" onclick="addGasto()">
+            Salvar Gasto
+          </button>
+        </div>
+
+        <ul id="listaGastos"></ul>
       </div>
-
-      <ul id="listaGastos"></ul>
     </section>
 
   </main>

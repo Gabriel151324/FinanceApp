@@ -43,7 +43,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border-right: 1px solid rgba(255,255,255,0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .sidebar h2 {
@@ -64,7 +64,7 @@ body {
 }
 
 .sidebar button:hover {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* =========================
@@ -80,7 +80,7 @@ body {
 ========================= */
 .page {
   display: none;
-  animation: fade 0.3s ease;
+  animation: fade 1s ease;
 }
 
 .page.active {
@@ -92,6 +92,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -115,7 +116,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .card span {
@@ -200,7 +201,7 @@ ul {
 }
 
 li {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   padding: 14px;
   border-radius: var(--radius);
   margin-bottom: 10px;
@@ -237,6 +238,7 @@ li button {
 
 .filter {
   color: var(--text);
+  background: var(--card);
 }
 
 /* =========================
@@ -270,7 +272,7 @@ li button {
     padding: 8px 8px;
     border-right: none;
     border-radius: 20px;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 1000;
     background-color: #020617;
   }
@@ -287,7 +289,20 @@ li button {
   }
 
   .content {
-    padding-bottom: 80px; /* espaço pra barra não cobrir conteúdo */
+    padding-bottom: 80px;
+    /* espaço pra barra não cobrir conteúdo */
   }
 }
 
+@media (min-width: 1024px) {
+  .cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .box-gastos {
+    width: clamp(350px, 100%, 450px);
+    padding: 24px;
+    text-align: center;
+    margin-left: 350px;
+  }
+}
