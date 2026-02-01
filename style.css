@@ -242,6 +242,74 @@ li button {
 }
 
 /* =========================
+   CONFIGURAÇÕES
+========================= */
+.meta-mensal {
+  background: #1e293b;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.meta-config {
+  display: flex;
+  gap: 20px;
+  margin: 15px 0;
+  margin-bottom: 12px;
+}
+
+.meta-config input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+}
+
+.meta-config button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.meta-barra {
+  width: 100%;
+  height: 12px;
+  background: #334155;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.meta-progresso {
+  height: 100%;
+  width: 0%;
+  background: #22c55e;
+  transition: width 0.3s ease;
+}
+
+.meta-progresso.estourou {
+  background: #ef4444;
+}
+
+.botoes-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+button.danger {
+  background: #ef4444;
+  color: white;
+}
+
+button.danger:hover {
+  opacity: 0.9;
+}
+
+
+/* =========================
    RESPONSIVO
 ========================= */
 @media (min-width: 768px) {
