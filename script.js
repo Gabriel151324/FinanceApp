@@ -131,12 +131,32 @@ function filtrarPorMes(lista, mes) {
   return lista.filter(item => item.data.startsWith(mes));
 }
 
+function filtrarParaListas(lista, mes) {
+  if (!mes) return lista;
+
+  const [ano, mesNum] = mes.split("-");
+
+  return lista.filter(item => {
+    const data = new Date(item.data);
+    return (
+      data.getFullYear() === Number(ano) &&
+      data.getMonth() === Number(mesNum) - 1
+    );
+  });
+}
+
+
 /* ======================
    LISTAS (AGRUPADAS POR DIA)
 ====================== */
 function renderListas() {
-  renderLista("listaGanhos", ganhos, "ganho");
-  renderLista("listaGastos", gastos, "gasto");
+  const mesSelecionado = filtroMes?.value;
+
+  const ganhosFiltrados = filtrarParaListas(ganhos, mesSelecionado);
+  const gastosFiltrados = filtrarParaListas(gastos, mesSelecionado);
+
+  renderLista("listaGanhos", ganhosFiltrados, "ganho");
+  renderLista("listaGastos", gastosFiltrados, "gasto");
 }
 
 function renderLista(idLista, dados, tipo) {
