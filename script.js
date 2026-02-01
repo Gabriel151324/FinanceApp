@@ -17,9 +17,9 @@ const filtroMes = document.getElementById("filtroMes");
    NAVEGAÇÃO
 ====================== */
 function showPage(id) {
-  document
-    .querySelectorAll(".page")
-    .forEach((p) => p.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.remove("active")
+  );
   document.getElementById(id).classList.add("active");
 }
 
@@ -53,7 +53,7 @@ function addGanho() {
     id: Date.now(),
     valor,
     data,
-    descricao,
+    descricao
   });
 
   valorInput.value = "";
@@ -82,7 +82,7 @@ function addGasto() {
     id: Date.now(),
     valor,
     data,
-    descricao,
+    descricao
   });
 
   valorInput.value = "";
@@ -104,22 +104,23 @@ function atualizar() {
 
   totalGanhos.innerText = totalG.toLocaleString("pt-BR", {
     style: "currency",
-    currency: "BRL",
+    currency: "BRL"
   });
 
   totalGastos.innerText = totalGa.toLocaleString("pt-BR", {
     style: "currency",
-    currency: "BRL",
+    currency: "BRL"
   });
 
   lucro.innerText = (totalG - totalGa).toLocaleString("pt-BR", {
     style: "currency",
-    currency: "BRL",
+    currency: "BRL"
   });
 
   renderListas();
   atualizarGrafico(mesSelecionado);
 }
+
 
 /* ======================
    FILTRO DE MÊS
@@ -127,7 +128,7 @@ function atualizar() {
 function filtrarPorMes(lista, mes) {
   if (!mes) return lista;
 
-  return lista.filter((item) => item.data.startsWith(mes));
+  return lista.filter(item => item.data.startsWith(mes));
 }
 
 function filtrarParaListas(lista, mes) {
@@ -135,7 +136,7 @@ function filtrarParaListas(lista, mes) {
 
   const [ano, mesNum] = mes.split("-");
 
-  return lista.filter((item) => {
+  return lista.filter(item => {
     const data = new Date(item.data);
     return (
       data.getFullYear() === Number(ano) &&
@@ -144,24 +145,12 @@ function filtrarParaListas(lista, mes) {
   });
 }
 
+
 /* ======================
    LISTAS (AGRUPADAS POR DIA)
 ====================== */
 function renderListas() {
   const mesSelecionado = filtroMes?.value;
-  const dadosMes = filtrarParaListas(dados, mesSelecionado);
-  const mediaDiaria = calcularMediaDiaria(dadosMes);
-
-  const alerta =
-    tipo === "gasto" && gastoForaDoPadrao(item, mediaDiaria) ? "⚠️" : "";
-
-  <li class="${alerta ? 'alerta-gasto' : ''}">
-    <span>
-      ${alerta} ${item.descricao}
-    </span>
-    <strong>R$ ${Number(item.valor).toFixed(2)}</strong>
-    <button onclick="excluir('${tipo}', ${item.id})">🗑</button>
-  </li>;
 
   const ganhosFiltrados = filtrarParaListas(ganhos, mesSelecionado);
   const gastosFiltrados = filtrarParaListas(gastos, mesSelecionado);
@@ -185,14 +174,14 @@ function renderLista(idLista, dados, tipo) {
   Object.keys(agrupado)
     .sort()
     .reverse()
-    .forEach((data) => {
+    .forEach(data => {
       lista.innerHTML += `
         <li class="data-separador">
           📅 ${formatarData(data)}
         </li>
       `;
 
-      agrupado[data].forEach((item) => {
+      agrupado[data].forEach(item => {
         lista.innerHTML += `
           <li>
             <span>${item.descricao}</span>
@@ -209,9 +198,9 @@ function renderLista(idLista, dados, tipo) {
 ====================== */
 function excluir(tipo, id) {
   if (tipo === "ganho") {
-    ganhos = ganhos.filter((g) => g.id !== id);
+    ganhos = ganhos.filter(g => g.id !== id);
   } else {
-    gastos = gastos.filter((g) => g.id !== id);
+    gastos = gastos.filter(g => g.id !== id);
   }
   salvar();
 }
@@ -232,7 +221,9 @@ function calcularMediaDiaria(gastosMes) {
 
   const total = gastosMes.reduce((s, g) => s + Number(g.valor), 0);
 
-  const diasUnicos = new Set(gastosMes.map((g) => g.data)).size;
+  const diasUnicos = new Set(
+    gastosMes.map(g => g.data)
+  ).size;
 
   return total / diasUnicos;
 }
@@ -243,6 +234,7 @@ function calcularMediaDiaria(gastosMes) {
 if (filtroMes) {
   filtroMes.addEventListener("change", atualizar);
 }
+
 
 /* ======================
    INIT
@@ -259,8 +251,8 @@ function agruparPorDia(lista, mes) {
   const dados = {};
 
   lista
-    .filter((item) => !mes || item.data.startsWith(mes))
-    .forEach((item) => {
+    .filter(item => !mes || item.data.startsWith(mes))
+    .forEach(item => {
       const dia = item.data.split("-")[2];
       dados[dia] = (dados[dia] || 0) + Number(item.valor);
     });
@@ -276,38 +268,38 @@ function atualizarGrafico(mesSelecionado) {
   const gastosDia = agruparPorDia(gastos, mesSelecionado);
 
   const dias = Array.from(
-    new Set([...Object.keys(ganhosDia), ...Object.keys(gastosDia)]),
+    new Set([...Object.keys(ganhosDia), ...Object.keys(gastosDia)])
   ).sort((a, b) => a - b);
 
-  const dadosGanhos = dias.map((d) => ganhosDia[d] || 0);
-  const dadosGastos = dias.map((d) => gastosDia[d] || 0);
+  const dadosGanhos = dias.map(d => ganhosDia[d] || 0);
+  const dadosGastos = dias.map(d => gastosDia[d] || 0);
 
   if (grafico) grafico.destroy();
 
   grafico = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: dias.map((d) => `Dia ${d}`),
+      labels: dias.map(d => `Dia ${d}`),
       datasets: [
         {
           label: "Ganhos",
           data: dadosGanhos,
-          backgroundColor: "#2ecc71",
+          backgroundColor: "#2ecc71"
         },
         {
           label: "Gastos",
           data: dadosGastos,
-          backgroundColor: "#e74c3c",
-        },
-      ],
+          backgroundColor: "#e74c3c"
+        }
+      ]
     },
     options: {
       responsive: true,
       plugins: {
         legend: {
-          position: "top",
-        },
-      },
-    },
+          position: "top"
+        }
+      }
+    }
   });
 }

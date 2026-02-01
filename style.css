@@ -227,14 +227,6 @@ li button {
 }
 
 /* =========================
-    ALERTA GASTO
-========================= */
-.alerta-gasto {
-  border-left: 4px solid #e74c3c;
-  padding-left: 8px;
-}
-
-/* =========================
    FILTRO MÊS
 ========================= */
 .filtro-mes {
