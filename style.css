@@ -241,11 +241,6 @@ li button {
   background: var(--card);
 }
 
-.filtro-mes input {
-  width: 150px;
-  text-decoration: none;
-}
-
 /* =========================
    RESPONSIVO
 ========================= */
