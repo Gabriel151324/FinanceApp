@@ -4,7 +4,6 @@
 let ganhos = JSON.parse(localStorage.getItem("ganhos")) || [];
 let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
 let grafico = null;
-let metaMensal = Number(localStorage.getItem("metaMensal")) || 0;
 
 /* ======================
    ELEMENTOS DASHBOARD
@@ -92,67 +91,6 @@ function addGasto() {
 }
 
 /* ======================
-   DEFINIR META MENSAL
-====================== */
-function salvarMeta() {
-  const input = document.getElementById("metaValor");
-  const valor = Number(input.value);
-
-  if (!valor || valor <= 0) {
-    alert("Informe um valor válido");
-    return;
-  }
-
-  metaMensal = valor;
-  localStorage.setItem("metaMensal", metaMensal);
-
-  input.value = "";
-  atualizar();
-}
-
-function atualizarMeta(gastosMes) {
-  const barra = document.getElementById("metaProgresso");
-  const texto = document.getElementById("metaTexto");
-
-  if (!barra || !texto) return;
-
-  if (!metaMensal) {
-    barra.style.width = "0%";
-    barra.classList.remove("estourou");
-    texto.innerText = "Nenhuma meta definida";
-    return;
-  }
-
-  const total = gastosMes.reduce(
-    (s, g) => s + Number(g.valor),
-    0
-  );
-
-  const percentual = Math.min((total / metaMensal) * 100, 100);
-
-  barra.style.width = `${percentual}%`;
-  barra.classList.toggle("estourou", total > metaMensal);
-
-  texto.innerText =
-    total > metaMensal
-      ? `⚠️ Meta estourada! R$ ${total.toFixed(2)}`
-      : `Usado R$ ${total.toFixed(2)} de R$ ${metaMensal.toFixed(2)}`;
-}
-
-/* ======================
-   REMOVER META MENSAL
-====================== */
-function removerMeta() {
-  const confirmar = confirm("Deseja remover a meta mensal?");
-  if (!confirmar) return;
-
-  metaMensal = 0;
-  localStorage.removeItem("metaMensal");
-
-  atualizar();
-}
-
-/* ======================
    ATUALIZAR DASHBOARD
 ====================== */
 function atualizar() {
@@ -181,7 +119,6 @@ function atualizar() {
 
   renderListas();
   atualizarGrafico(mesSelecionado);
-  atualizarMeta(gastosFiltrados);
 }
 
 

@@ -31,8 +31,6 @@
     <button onclick="showPage('gastos')">
       Gastos
     </button>
-
-    <button onclick="showPage('configuracoes')"><span>Config</span></button>
   </aside>
 
   <!-- CONTEÚDO -->
@@ -103,33 +101,6 @@
         <ul id="listaGastos"></ul>
       </div>
     </section>
-
-    <section id="configuracoes" class="page">
-      <div class="box-gastos">
-        <h1>⚙️ Configurações</h1>
-
-        <div class="meta-mensal">
-          <h3>🎯 Meta mensal de gastos</h3>
-
-          <div class="meta-config">
-            <input type="number" id="metaValor" placeholder="Defina sua meta (R$)" />
-            <div class="botoes-meta">
-              <button onclick="salvarMeta()">Salvar</button>
-              <button class="danger" onclick="removerMeta()">Remover</button>
-            </div>
-          </div>
-
-          <div class="meta-info">
-            <div class="meta-barra">
-              <div class="meta-progresso" id="metaProgresso"></div>
-            </div>
-
-            <p id="metaTexto">Nenhuma meta definida</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </main>
 
   <!-- SCRIPT -->
